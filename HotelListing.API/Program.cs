@@ -1,3 +1,5 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,7 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options=>options.AddPolicy("AllowAll",
      b=>b.AllowAnyHeader().AllowAnyOrigin().AllowAnyOrigin()));
 
-
+builder.Host.UseSerilog((ctx,lc)=>lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +24,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
 
