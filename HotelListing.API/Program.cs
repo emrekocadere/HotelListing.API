@@ -23,6 +23,7 @@ builder.Services.AddCors(options=>options.AddPolicy("AllowAll",
 builder.Host.UseSerilog((ctx,lc)=>lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
 
+
 builder.Services.AddAutoMapper(typeof(MapperConfig).Assembly);
 
 var app = builder.Build(); 

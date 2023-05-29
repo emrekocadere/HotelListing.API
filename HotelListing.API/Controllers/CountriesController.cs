@@ -45,32 +45,12 @@ namespace HotelListing.API.Controllers
 
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
+        [HttpPut]
+        public async Task<IActionResult> PutCountry(GetCountryDTO dto)
         {
-            if (id != country.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(country).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            var country = _context.Countries.Find(dto.Id);
+            _mapper.Map(dto,country);
+            _context.SaveChanges();
             return NoContent();
         }
 
@@ -80,10 +60,8 @@ namespace HotelListing.API.Controllers
         public async Task<ActionResult<Country>> PostCountry(CountryDTO createCounry)
         {
             var country=_mapper.Map<Country>(createCounry);
-
             _context.Countries.Add(country);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
 
