@@ -1,6 +1,9 @@
-﻿namespace HotelListing.API.Repository
+﻿using HotelListing.API.Data;
+
+namespace HotelListing.API.Repository
 {
-    public interface ICountriesRepository
+    public interface ICountriesRepository:IGenericRepository<Country>
     {
+        Task<Country> GetDetails(int id);
     }
 }
